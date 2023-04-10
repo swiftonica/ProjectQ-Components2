@@ -8,11 +8,11 @@
 import Foundation
 import ProjectQ_Models
 
-extension ComponentId {
+public extension ComponentId {
     static let interval = ComponentId(pureNumber: 1)
 }
 
-extension Component {
+public extension Component {
     static var interval: Component {
         return Component(
             id: .interval,

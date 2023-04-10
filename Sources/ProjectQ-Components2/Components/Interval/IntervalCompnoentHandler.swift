@@ -97,13 +97,13 @@ public class IntervalComponentHandler: ComponentHandler {
             let calendar = Calendar.current
             
             // in case if cache is not inited yet, you take the current date
-            let startDate = cache?.lastDate ?? Date()
+            let startDate = cache.lastDate 
             let endDate = Date()
             let components = calendar.dateComponents([.second], from: startDate, to: endDate)
 
             if let seconds = components.second {
                 if seconds >= interval {
-                    self.cache?.lastDate = Date() // <- [!] set state
+                    self.cache.lastDate = Date() // <- [!] set state
                     basicClient.showCurrentTask()
                 }
             }
@@ -114,7 +114,7 @@ public class IntervalComponentHandler: ComponentHandler {
     
     // [!] all this variables mustn't uses outside
     public var input: Data
-    public var cache: IntervalComponentHandlerCache?
+    public var cache: IntervalComponentHandlerCache = .init(lastDate: Date())
     private let basicClient: BasicClientable
 }
 

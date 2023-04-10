@@ -36,4 +36,26 @@ public extension Component {
             handler: handler
         )
     }
+    
+    static func interval(input: IntervalComponentHandlerInput) -> Component {
+        guard let basicClient = ProjectQ_Components2.shared.basicClient else {
+            NSLog("ProjectQ-Compnents2: [!] Can't construct IntervalComponent due the basicClient is not configured")
+            return self.interval
+        }
+        
+        guard let inputData = try? JSONEncoder().encode(input) else {
+            NSLog("ProjectQ-Compnents2: [!] Can't construct IntervalComponent due the JSONEncoder error")
+            return self.interval
+        }
+        
+        let handler = IntervalComponentHandler(
+            basicClient: basicClient,
+            input: inputData
+        )
+        return Component(
+            id: .interval,
+            information: .init(name: "Interval", conflictedComponents: nil),
+            handler: handler
+        )
+    }
 }

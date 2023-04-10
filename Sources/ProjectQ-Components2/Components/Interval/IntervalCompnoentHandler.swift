@@ -121,7 +121,7 @@ public class IntervalComponentHandler: ComponentHandler {
 //MARK: - helpers
 private extension IntervalComponentHandler {
     func getInput() -> IntervalComponentHandlerInput? {
-        return nil
+        return try? JSONDecoder().decode(IntervalComponentHandlerInput.self, from: input)
     }
 }
 

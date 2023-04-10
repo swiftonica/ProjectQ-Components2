@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ProjectQ_Models
 
 public extension ComponentId {
     static let interval = ComponentId(pureNumber: 1)

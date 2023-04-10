@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ProjectQ_Models
+
 
 public protocol BasicClientable {
     func showCurrentTask()

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ProjectQ_Models
 
 public class EmptyHandler: ComponentHandler {
     public func action() {}

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ProjectQ_Models
 
 fileprivate func dayNumberOfWeek(date: Date) -> Int? {
     return Calendar.current.dateComponents([.weekday], from: date).weekday

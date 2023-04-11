@@ -21,7 +21,7 @@ public extension Component {
     }
     
     static func description(input: Data) -> Component {
-        let handler = IntervalComponentHandler(input: input)
+        let handler = DescriptionComponentHandler(input: input)
         return Component(
             id: .interval,
             information: .init(name: "Description", conflictedComponents: nil),
@@ -29,13 +29,13 @@ public extension Component {
         )
     }
     
-    static func description(input: IntervalComponentHandlerInput) -> Component {
+    static func description(input: DescriptionComponentHandlerInput) -> Component {
         guard let inputData = try? JSONEncoder().encode(input) else {
             NSLog("ProjectQ-Compnents2: [!] Can't construct DescriptionComponent due the JSONEncoder error")
             return self.description
         }
         
-        let handler = IntervalComponentHandler(input: inputData)
+        let handler = DescriptionComponentHandler(input: inputData)
         return Component(
             id: .interval,
             information: .init(name: "Description", conflictedComponents: nil),

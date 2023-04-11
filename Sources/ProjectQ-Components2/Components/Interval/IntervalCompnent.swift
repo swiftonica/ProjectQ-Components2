@@ -21,10 +21,7 @@ public extension Component {
     }
     
     static func interval(input: Data) -> Component {
-        let handler = IntervalComponentHandler(
-            basicClient: basicClient,
-            input: input
-        )
+        let handler = IntervalComponentHandler(input: input)
         return Component(
             id: .interval,
             information: .init(name: "Interval", conflictedComponents: nil),
@@ -38,10 +35,7 @@ public extension Component {
             return self.interval
         }
         
-        let handler = IntervalComponentHandler(
-            basicClient: basicClient,
-            input: inputData
-        )
+        let handler = IntervalComponentHandler(input: inputData)
         return Component(
             id: .interval,
             information: .init(name: "Interval", conflictedComponents: nil),

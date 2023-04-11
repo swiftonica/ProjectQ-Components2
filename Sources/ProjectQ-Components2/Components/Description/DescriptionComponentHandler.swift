@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DescriptionComponentHandlerInput: Codable {
+public struct DescriptionComponentHandlerInput: Codable {
     public init(description: String) {
         self.description = description
     }
@@ -15,7 +15,7 @@ struct DescriptionComponentHandlerInput: Codable {
     public let description: String
 }
 
-class DescriptionComponentHandler: DataComponentHanlder {
+public class DescriptionComponentHandler: DataComponentHanlder {
     public init(input: Data) {
         self.input = input
     }

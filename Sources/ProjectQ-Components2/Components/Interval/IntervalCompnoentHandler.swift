@@ -95,14 +95,35 @@ public class IntervalComponentHandler: ComponentHandler {
         switch _input.intervalType {
         case .secondsInterval(let interval):
             let calendar = Calendar.current
-            
-            // in case if cache is not inited yet, you take the current date
-            let startDate = cache.lastDate 
+            let startDate = cache.lastDate  
             let endDate = Date()
-            let components = calendar.dateComponents([.second], from: startDate, to: endDate)
 
-            if let seconds = components.second {
+            if let seconds = getInterval(component: .second, date1: startDate, date2: endDate).second {
                 if seconds >= interval {
+                    self.cache.lastDate = Date() // <- [!] set state
+                    basicClient.showCurrentTask()
+                }
+            }
+            
+        case .hoursInterval(let interval):
+            let calendar = Calendar.current
+            let startDate = cache.lastDate
+            let endDate = Date()
+
+            if let hours = getInterval(component: .hour, date1: startDate, date2: endDate).second {
+                if hours >= interval {
+                    self.cache.lastDate = Date() // <- [!] set state
+                    basicClient.showCurrentTask()
+                }
+            }
+            
+        case .minutesInterval(let interval):
+            let calendar = Calendar.current
+            let startDate = cache.lastDate
+            let endDate = Date()
+
+            if let minutes = getInterval(component: .minute, date1: startDate, date2: endDate).second {
+                if minutes >= interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     basicClient.showCurrentTask()
                 }
@@ -122,6 +143,12 @@ public class IntervalComponentHandler: ComponentHandler {
 private extension IntervalComponentHandler {
     func getInput() -> IntervalComponentHandlerInput? {
         return try? JSONDecoder().decode(IntervalComponentHandlerInput.self, from: input)
+    }
+    
+    func getInterval(component: Calendar.Component, date1: Date, date2: Date) -> DateComponents {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([component], from: date1, to: date2)
+        return components
     }
 }
 

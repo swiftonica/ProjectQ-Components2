@@ -8,7 +8,13 @@
 import Foundation
 
 public protocol ComponentHandler {
-    func action()
-   
     var input: Data { get }
+}
+
+public protocol AppearComponentHandler: ComponentHandler {
+    func shouldAppear() -> Bool
+}
+
+public protocol DataComponentHanlder: ComponentHandler {
+    func data() -> String
 }

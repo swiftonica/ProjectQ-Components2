@@ -81,27 +81,26 @@ public struct IntervalComponentHandlerInput: Codable {
     public let time: Date
 }
 
-public class IntervalComponentHandler: ComponentHandler {
-    init(basicClient: BasicClientable, input: Data) {
+public class IntervalComponentHandler: AppearComponentHandler {
+    init(input: Data) {
         self.input = input
-        self.basicClient = basicClient
     }
-   
-    public func action() {
+
+    public func shouldAppear() -> Bool {
         guard let _input = getInput() else {
-            return
+            return false
         }
         
         switch _input.intervalType {
         case .secondsInterval(let interval):
             let calendar = Calendar.current
-            let startDate = cache.lastDate  
+            let startDate = cache.lastDate
             let endDate = Date()
 
             if let seconds = getInterval(component: .second, date1: startDate, date2: endDate).second {
                 if seconds >= interval {
                     self.cache.lastDate = Date() // <- [!] set state
-                    basicClient.showCurrentTask()
+                    return true
                 }
             }
             
@@ -113,7 +112,7 @@ public class IntervalComponentHandler: ComponentHandler {
             if let hours = getInterval(component: .hour, date1: startDate, date2: endDate).second {
                 if hours >= interval {
                     self.cache.lastDate = Date() // <- [!] set state
-                    basicClient.showCurrentTask()
+                    return true
                 }
             }
             
@@ -125,18 +124,18 @@ public class IntervalComponentHandler: ComponentHandler {
             if let minutes = getInterval(component: .minute, date1: startDate, date2: endDate).second {
                 if minutes >= interval {
                     self.cache.lastDate = Date() // <- [!] set state
-                    basicClient.showCurrentTask()
+                    return true
                 }
             }
             
         default: break
         }
+        return false 
     }
     
-    // [!] all this variables mustn't uses outside
+    // [!] all this variables mustn't be used outside
     public var input: Data
     public var cache: IntervalComponentHandlerCache = .init(lastDate: Date())
-    private let basicClient: BasicClientable
 }
 
 //MARK: - helpers

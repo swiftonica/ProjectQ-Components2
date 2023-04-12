@@ -22,8 +22,8 @@ public struct ComponentId {
         self.pureNumber = pureNumber
     }
     
-    static let none = ComponentId(pureNumber: -1)
-    let pureNumber: Int
+    public static let none = ComponentId(pureNumber: -1)
+    public let pureNumber: Int
 }
 
 public class Component {

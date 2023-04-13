@@ -15,6 +15,18 @@ public struct CodableComponent: Codable {
     
     public let pureNumber: Int
     public let handlerInput: Data
+    
+    public var component: Component? {
+        return Component.byCodableComponent(self)
+    }
+}
+
+public extension Array where Element == CodableComponent {
+    var components: [Component] {
+        return self.compactMap {
+            return $0.component
+        }
+    }
 }
 
 public struct CodableTask: Codable {
@@ -25,6 +37,18 @@ public struct CodableTask: Codable {
     
     public let name: String
     public let codableComponents: [CodableComponent]
+    
+    public var task: Task {
+        return Task(codableTask: self)
+    }
+}
+
+public extension Array where Element == CodableTask {
+    var tasks: [Task] {
+        return self.compactMap {
+            return $0.task
+        }
+    }
 }
 
 public struct CodablePackage: Codable {
@@ -35,6 +59,16 @@ public struct CodablePackage: Codable {
     
     public let name: String
     public let codableTasks: [CodableTask]
+    
+    public var package: Package {
+        return Package(codablePackage: self)
+    }
 }
 
-
+public extension Array where Element == CodablePackage {
+    var packages: [Package] {
+        return self.compactMap {
+            return $0.package
+        }
+    }
+}

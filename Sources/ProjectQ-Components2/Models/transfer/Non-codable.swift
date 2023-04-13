@@ -13,6 +13,10 @@ public struct Task {
         self.components = components
     }
     
+    public init(codableTask: CodableTask) {
+        self.init(name: codableTask.name, components: codableTask.codableComponents.components)
+    }
+    
     public let name: String
     public let components: [Component]
     
@@ -25,7 +29,13 @@ public struct Package {
         self.tasks = tasks
     }
     
+    public init(codablePackage: CodablePackage) {
+        self.init(name: codablePackage.name, tasks: codablePackage.codableTasks.tasks)
+    }
+    
     public let name: String
     public let tasks: [Task]
+    
+    static let empty = Package(name: "", tasks: [])
 }
 

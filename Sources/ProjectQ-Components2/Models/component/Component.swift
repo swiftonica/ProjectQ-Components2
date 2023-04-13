@@ -35,14 +35,14 @@ public class Component {
     
     public let id: ComponentId
     public let information: ComponentInformation
-    public let handler: ComponentHandler
+    public var handler: ComponentHandler
     
-    public static let allComponents: [Component] = [
-        .interval, description
-    ]
-    
-    public static func byPureNumber(_ pureNumber: Int) -> Component? {
-        return allComponents.first(where: { $0.id.pureNumber == pureNumber})
+    public static func byCodableComponent(_ codableComponent: CodableComponent) -> Component? {
+        switch codableComponent.pureNumber {
+        case 1: return interval(input: codableComponent.handlerInput)
+        case 2: return description(input: codableComponent.handlerInput)
+        default: return nil
+        }
     }
 }
 

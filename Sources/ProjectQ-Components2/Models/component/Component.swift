@@ -50,10 +50,22 @@ public class Component {
         default: return nil
         }
     }
+    
+    var codableComponent: CodableComponent {
+        return CodableComponent(component: self)
+    }
 }
 
 extension Component: Equatable {
     public static func == (lhs: Component, rhs: Component) -> Bool {
         return lhs.id == rhs.id
+    }
+}
+
+public extension Array where Element == Component {
+    var codableComponent: [CodableComponent] {
+        return self.compactMap {
+            $0.codableComponent
+        }
     }
 }

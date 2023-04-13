@@ -21,6 +21,18 @@ public struct Task {
     public let components: [Component]
     
     static let empty = Task(name: "", components: [])
+    
+    var codableTask: CodableTask {
+        return CodableTask(task: self)
+    }
+}
+
+public extension Array where Element == Task {
+    var codableTasks: [CodableTask] {
+        return self.compactMap {
+            return $0.codableTask
+        }
+    }
 }
 
 public struct Package {
@@ -37,5 +49,16 @@ public struct Package {
     public let tasks: [Task]
     
     static let empty = Package(name: "", tasks: [])
+    
+    var codablePackage: CodablePackage {
+        return CodablePackage(package: self)
+    }
 }
 
+public extension Array where Element == Package {
+    var codablePackages: [CodablePackage] {
+        return self.compactMap {
+            return $0.codablePackage
+        }
+    }
+}

@@ -13,6 +13,10 @@ public struct CodableComponent: Codable {
         self.handlerInput = handlerInput
     }
     
+    public init(component: Component) {
+        self.init(pureNumber: component.id.pureNumber, handlerInput: component.handler.input)
+    }
+    
     public let pureNumber: Int
     public let handlerInput: Data
     
@@ -35,6 +39,10 @@ public struct CodableTask: Codable {
         self.codableComponents = codableComponents
     }
     
+    public init(task: Task) {
+        self.init(name: task.name, codableComponents: task.components.codableComponents)
+    }
+    
     public let name: String
     public let codableComponents: [CodableComponent]
     
@@ -55,6 +63,10 @@ public struct CodablePackage: Codable {
     public init(name: String, codableTasks: [CodableTask]) {
         self.name = name
         self.codableTasks = codableTasks
+    }
+    
+    public init(package: Package) {
+        self.init(name: package.name, codableComponents: package.tasks.codableTasks)
     }
     
     public let name: String

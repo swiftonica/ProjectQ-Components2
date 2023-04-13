@@ -37,6 +37,12 @@ public class Component {
     public let information: ComponentInformation
     public var handler: ComponentHandler
     
+    public static var allComponents: [Component] {
+        return [
+            .interval, .description
+        ]
+    }
+    
     public static func byCodableComponent(_ codableComponent: CodableComponent) -> Component? {
         switch codableComponent.pureNumber {
         case 1: return interval(input: codableComponent.handlerInput)

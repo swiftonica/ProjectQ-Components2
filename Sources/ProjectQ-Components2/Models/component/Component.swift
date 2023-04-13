@@ -17,7 +17,7 @@ public struct ComponentInformation {
     public let conflictedComponents: [Component]?
 }
 
-public struct ComponentId {
+public struct ComponentId: Equatable {
     public init(pureNumber: Int) {
         self.pureNumber = pureNumber
     }
@@ -37,5 +37,17 @@ public class Component {
     public let information: ComponentInformation
     public let handler: ComponentHandler
     
-    public var allComponents: [Component] = []
+    public static let allComponents: [Component] = [
+        .interval, description
+    ]
+    
+    public static func byPureNumber(_ pureNumber: Int) -> Component? {
+        return allComponents.first(where: { $0.id.pureNumber == pureNumber})
+    }
+}
+
+extension Component: Equatable {
+    public static func == (lhs: Component, rhs: Component) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

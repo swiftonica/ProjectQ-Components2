@@ -14,7 +14,7 @@ public extension ComponentId {
 public extension Component {
     static var description: Component {
         return Component(
-            id: .interval,
+            id: .description,
             information: .init(name: "Description", conflictedComponents: nil),
             handler: EmptyHandler()
         )
@@ -23,7 +23,7 @@ public extension Component {
     static func description(input: Data) -> Component {
         let handler = DescriptionComponentHandler(input: input)
         return Component(
-            id: .interval,
+            id: .description,
             information: .init(name: "Description", conflictedComponents: nil),
             handler: handler
         )

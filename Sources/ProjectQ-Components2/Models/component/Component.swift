@@ -37,6 +37,10 @@ public class Component {
     public let information: ComponentInformation
     public var handler: ComponentHandler
     
+    public var handlerType: HandlerType {
+        return .init(handler: self.handler)
+    }
+    
     public static var allComponents: [Component] {
         return [
             .interval, .description

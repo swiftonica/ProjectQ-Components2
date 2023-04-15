@@ -15,6 +15,11 @@ public protocol AppearComponentHandler: ComponentHandler {
     func shouldAppear() -> Bool
 }
 
-public protocol DataComponentHanlder: ComponentHandler {
+public protocol DataComponentHandler: ComponentHandler {
     func data() -> String
+}
+
+public protocol InteractiveComponentHandler: DataComponentHandler {
+    func isDataCorrect(data: Data) -> Bool
+    func clear()
 }

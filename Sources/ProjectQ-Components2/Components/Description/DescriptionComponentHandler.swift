@@ -15,7 +15,7 @@ public struct DescriptionComponentHandlerInput: Codable {
     public let description: String
 }
 
-public class DescriptionComponentHandler: DataComponentHanlder {
+public class DescriptionComponentHandler: DataComponentHandler {
     public init(input: Data) {
         self.input = input
     }

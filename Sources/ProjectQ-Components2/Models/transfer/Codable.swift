@@ -33,6 +33,14 @@ public extension Array where Element == CodableComponent {
     }
 }
 
+public extension Array where Element == Component {
+    var codableComponents: [CodableComponent] {
+        return self.compactMap {
+            $0.codableComponent
+        }
+    }
+}
+
 public struct CodableTask: Codable {
     public init(name: String, codableComponents: [CodableComponent]) {
         self.name = name
@@ -66,7 +74,7 @@ public struct CodablePackage: Codable {
     }
     
     public init(package: Package) {
-        self.init(name: package.name, codableComponents: package.tasks.codableTasks)
+        self.init(name: package.name, codableTasks: package.tasks.codableTasks)
     }
     
     public let name: String

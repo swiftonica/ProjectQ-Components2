@@ -73,6 +73,7 @@ public struct IntervalComponentHandlerInput: Codable {
         case minutesInterval(Int)
         case secondsInterval(Int)
         case hoursInterval(Int)
+        
     }
     
     public typealias WeekDays = [WeekDay]
@@ -91,7 +92,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
             return false
         }
         
-        switch _input.intervalType {
+        switch _input.intervalType {            
         case .secondsInterval(let interval):
             let calendar = Calendar.current
             let startDate = cache.lastDate
@@ -103,7 +104,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
                     return true
                 }
             }
-            
+
         case .hoursInterval(let interval):
             let calendar = Calendar.current
             let startDate = cache.lastDate
@@ -115,7 +116,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
                     return true
                 }
             }
-            
+
         case .minutesInterval(let interval):
             let calendar = Calendar.current
             let startDate = cache.lastDate

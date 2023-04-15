@@ -48,9 +48,9 @@ public struct Package {
     public let name: String
     public let tasks: [Task]
     
-    static let empty = Package(name: "", tasks: [])
+    public static let empty = Package(name: "", tasks: [])
     
-    var codablePackage: CodablePackage {
+    public var codablePackage: CodablePackage {
         return CodablePackage(package: self)
     }
 }

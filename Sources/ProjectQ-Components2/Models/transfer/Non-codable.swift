@@ -20,7 +20,7 @@ public struct Task {
     public let name: String
     public let components: [Component]
     
-    static let empty = Task(name: "", components: [])
+    public static let empty = Task(name: "", components: [])
     
     var codableTask: CodableTask {
         return CodableTask(task: self)

@@ -89,11 +89,21 @@ public class IntervalComponentHandler: AppearComponentHandler {
         
         switch _input.intervalType {            
         case .interval(let interval):
-            return false
-        case .byWeek(let days):
-            return false
+            let calendar = Calendar.current
+            let startDate = cache.lastDate
+            let endDate = Date()
+            let components = calendar.dateComponents([.day], from: startDate, to: endDate)
+            if let days = components.day, isNowTimeBigger(_input.time) {
+                if days >= interval {
+                    self.cache.lastDate = Date() // <- [!] set state
+                    return true
+                }
+            }
             
-        default: break
+        case .byWeek(let days):
+            if !days.filter({ return isToday($0) }).isEmpty, isNowTimeBigger(_input.time) {
+                return true
+            }
         }
         return false 
     }

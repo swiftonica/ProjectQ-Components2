@@ -15,7 +15,7 @@ public extension Component {
     static var smallInterval: Component {
         return Component(
             id: .smallInterval,
-            information: .init(name: "SmallInterval", conflictedComponents: nil),
+            information: .init(name: "Small Interval", conflictedComponents: nil),
             handler: EmptyHandler()
         )
     }
@@ -24,7 +24,7 @@ public extension Component {
         let handler = IntervalComponentHandler(input: input)
         return Component(
             id: .smallInterval,
-            information: .init(name: "Interval", conflictedComponents: nil),
+            information: .init(name: "Small Interval", conflictedComponents: nil),
             handler: handler
         )
     }

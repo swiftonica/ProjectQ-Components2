@@ -14,7 +14,7 @@ public extension ComponentId {
 public extension Component {
     static var smallInterval: Component {
         return Component(
-            id: .interval,
+            id: .smallInterval,
             information: .init(name: "SmallInterval", conflictedComponents: nil),
             handler: EmptyHandler()
         )
@@ -23,7 +23,7 @@ public extension Component {
     static func smallInterval(input: Data) -> Component {
         let handler = IntervalComponentHandler(input: input)
         return Component(
-            id: .interval,
+            id: .smallInterval,
             information: .init(name: "Interval", conflictedComponents: nil),
             handler: handler
         )
@@ -32,7 +32,7 @@ public extension Component {
     static func smallInterval(input: IntervalComponentHandlerInput) -> Component {
         guard let inputData = try? JSONEncoder().encode(input) else {
             NSLog("ProjectQ-Compnents2: [!] Can't construct SmallIntervalComponent due the JSONEncoder error")
-            return self.interval
+            return self.smallInterval
         }
         
         let handler = IntervalComponentHandler(input: inputData)

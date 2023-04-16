@@ -8,7 +8,7 @@
 import Foundation
 
 public extension ComponentId {
-    static let smallInterval = ComponentId(pureNumber: 100)
+    static let smallInterval = ComponentId(pureNumber: 3)
 }
 
 public extension Component {

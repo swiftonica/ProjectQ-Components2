@@ -8,6 +8,11 @@
 import Foundation
 
 public struct SmallIntervalComponentHandlerInput: Codable {
+    public init(intervalType: SmallIntervalComponentHandlerInput.IntervalType, interval: Int) {
+        self.intervalType = intervalType
+        self.interval = interval
+    }
+    
     public enum IntervalType: Codable, Equatable {
         case hours
         case minutes

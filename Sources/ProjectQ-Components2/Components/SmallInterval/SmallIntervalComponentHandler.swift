@@ -8,17 +8,14 @@
 import Foundation
 
 public struct SmallIntervalComponentHandlerInput: Codable {
-    public init(intervalType: SmallIntervalComponentHandlerInput.IntervalType) {
-        self.intervalType = intervalType
-    }
-    
     public enum IntervalType: Codable, Equatable {
-        case hours(Int)
-        case minutes(Int)
-        case seconds(Int)
+        case hours
+        case minutes
+        case seconds
     }
     
     public let intervalType: IntervalType
+    public let interval: Int
 }
 
 public class SmallIntervalComponentHandler: AppearComponentHandler {
@@ -28,37 +25,37 @@ public class SmallIntervalComponentHandler: AppearComponentHandler {
         }
         
         switch input.intervalType {
-        case .seconds(let interval):
+        case .seconds:
             let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
             if let seconds = getInterval(component: .second, date1: startDate, date2: endDate).second {
-                if seconds >= interval {
+                if seconds >= input.interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     return true
                 }
             }
 
-        case .hours(let interval):
+        case .hours:
             let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
             if let hours = getInterval(component: .hour, date1: startDate, date2: endDate).second {
-                if hours >= interval {
+                if hours >= input.interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     return true
                 }
             }
 
-        case .minutes(let interval):
+        case .minutes:
             let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
             if let minutes = getInterval(component: .minute, date1: startDate, date2: endDate).second {
-                if minutes >= interval {
+                if minutes >= input.interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     return true
                 }

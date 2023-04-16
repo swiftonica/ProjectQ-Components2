@@ -51,7 +51,10 @@ public class Component {
         switch codableComponent.pureNumber {
         case 1: return interval(input: codableComponent.handlerInput)
         case 2: return description(input: codableComponent.handlerInput)
-        default: return nil
+        case 100: return smallInterval(input: codableComponent.handlerInput)
+        default:
+            NSLog("ProjectQ-Compnonents2: byCodableComponent(), can't construct the component")
+            return nil
         }
     }
     

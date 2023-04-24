@@ -103,7 +103,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
             let startDate = cache.lastDate
             let endDate = dateService.getNowDate()
             let components = calendar.dateComponents([.day], from: startDate, to: endDate)
-            if let days = components.day, isNowTimeBigger(_input.time) {
+            if let days = components.day, isNowTimeEqual(_input.time) {
                 if days >= interval {
                     self.cache.lastDate = dateService.getNowDate() // <- [!] set state
                     return true
@@ -111,7 +111,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
             }
             
         case .byWeek(let days):
-            if !days.filter({ return isToday($0) }).isEmpty, isNowTimeBigger(_input.time) {
+            if !days.filter({ return isToday($0) }).isEmpty, isNowTimeEqual(_input.time) {
                 return true
             }
         }
@@ -153,7 +153,6 @@ public extension IntervalComponentHandler {
     }
     
     func isNowTimeBigger(_ time: Date) -> Bool {
-
         let calendar = Calendar.current
         let newDate = Date(timeIntervalSinceReferenceDate: 0)
 
@@ -169,6 +168,26 @@ public extension IntervalComponentHandler {
                 to: newDate)
         {
             return _nowDate >= _timeDate
+        }
+        return false
+    }
+    
+    func isNowTimeEqual(_ time: Date) -> Bool {
+        let calendar = Calendar.current
+        let newDate = Date(timeIntervalSinceReferenceDate: 0)
+
+        let timeDateComponents = calendar.dateComponents([.hour, .minute], from: time)
+        let nowDateComponets = calendar.dateComponents([.hour, .minute], from: dateService.getNowDate())
+        
+        if
+            let _timeDate = calendar.date(
+                byAdding: timeDateComponents,
+                to: newDate),
+            let _nowDate = calendar.date(
+                byAdding: nowDateComponets,
+                to: newDate)
+        {
+            return _nowDate == _timeDate
         }
         return false
     }

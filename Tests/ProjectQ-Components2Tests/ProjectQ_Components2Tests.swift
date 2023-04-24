@@ -69,7 +69,7 @@ final class ProjectQ_Components2Tests: XCTestCase {
         XCTAssertFalse(handler.isNowTimeBigger(testTime))
     }
     
-    func testTwoDaysAWeekTimeBigger() {
+    func testOneDaysAWeekTimeBigger() {
         let calendar = Calendar.current
         
         // nowTime should be sat and has time at least on 1 second bigger than test time.
@@ -90,7 +90,7 @@ final class ProjectQ_Components2Tests: XCTestCase {
         XCTAssertTrue(handler.shouldAppear())
     }
     
-    func testTwoDaysAWeekTimeSmaller() {
+    func testOneDaysAWeekTimeSmaller() {
         let calendar = Calendar.current
         
         let nowTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 11, minute: 59, second: 0) // mon
@@ -108,6 +108,28 @@ final class ProjectQ_Components2Tests: XCTestCase {
         
         XCTAssertFalse(handler.shouldAppear())
     }
+    
+    func testTwoDaysAWeekTimeBigger() {
+        let calendar = Calendar.current
+        
+        // nowTime should be sat and has time at least on 1 second bigger than test time.
+        let nowTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 12, minute: 0, second: 1) // mon
+        let testTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 12, minute: 0, second: 0)
+        
+        let nowTime = calendar.date(from: nowTimeComp)!
+        let testTime = calendar.date(from: testTimeComp)!
+        
+        let mock = MockNowDateService(date: nowTime)
+        let input = IntervalComponentHandlerInput(intervalType: .byWeek([.mon]), time: testTime)
+        let handler = IntervalComponentHandler(
+            input: try! JSONEncoder().encode(input),
+            dateService: mock
+        )
+        
+        // nowTime accept all requirements so it should return true
+        XCTAssertTrue(handler.shouldAppear())
+    }
+    
     
     func testIntervalWithIntervalNowTimeBigger() {
         let calendar = Calendar.current

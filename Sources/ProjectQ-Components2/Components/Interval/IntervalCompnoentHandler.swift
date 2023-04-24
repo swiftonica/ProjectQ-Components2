@@ -11,10 +11,14 @@ fileprivate func dayNumberOfWeek(date: Date) -> Int? {
     return Calendar.current.dateComponents([.weekday], from: date).weekday
 }
 
-fileprivate func dayOfWeek(date: Date) -> String? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "EEEE"
-    return dateFormatter.string(from: date).capitalized
+public protocol DateServiceProtocol {
+    func getNowDate() -> Date
+}
+
+public class DateService: DateServiceProtocol {
+    public func getNowDate() -> Date {
+        return Date()
+    }
 }
 
 public struct IntervalComponentHandlerCache {
@@ -33,15 +37,16 @@ public struct IntervalComponentHandlerInput: Codable {
     public struct WeekDay: Codable, CaseIterable {
         public let index: Int
         public let name: String
+        public let appleIndex: Int
         
-        public static let sat = WeekDay(index: 5, name: "Saturday")
-        public static let sun = WeekDay(index: 6, name: "Sunday")
+        public static let sat = WeekDay(index: 5, name: "Saturday", appleIndex: 7)
+        public static let sun = WeekDay(index: 6, name: "Sunday", appleIndex: 1)
         
-        public static let mon = WeekDay(index: 0, name: "Monday")
-        public static let tue = WeekDay(index: 1, name: "Tuesday")
-        public static let wed = WeekDay(index: 2, name: "Wednesday")
-        public static let thu = WeekDay(index: 3, name: "Thursday")
-        public static let fri = WeekDay(index: 4, name: "Friday")
+        public static let mon = WeekDay(index: 0, name: "Monday", appleIndex: 2)
+        public static let tue = WeekDay(index: 1, name: "Tuesday", appleIndex: 3)
+        public static let wed = WeekDay(index: 2, name: "Wednesday", appleIndex: 4)
+        public static let thu = WeekDay(index: 3, name: "Thursday", appleIndex: 5)
+        public static let fri = WeekDay(index: 4, name: "Friday", appleIndex: 6)
         
         public static var allCases: [IntervalComponentHandlerInput.WeekDay] = [
             .mon, .tue, .wed, .thu, .fri, .sat, .sun
@@ -78,8 +83,12 @@ public struct IntervalComponentHandlerInput: Codable {
 }
 
 public class IntervalComponentHandler: AppearComponentHandler {
-    init(input: Data) {
+    init(
+        input: Data,
+        dateService: DateServiceProtocol = DateService()
+    ) {
         self.input = input
+        self.dateService = dateService
     }
 
     public func shouldAppear() -> Bool {
@@ -108,6 +117,8 @@ public class IntervalComponentHandler: AppearComponentHandler {
         return false 
     }
     
+    private let dateService: DateServiceProtocol
+    
     // [!] all this variables mustn't be used outside
     public var input: Data
     public var cache: IntervalComponentHandlerCache = .init(lastDate: Date())
@@ -127,25 +138,26 @@ private extension IntervalComponentHandler {
 }
 
 //MARK: - helpers
-private extension IntervalComponentHandler {
+public extension IntervalComponentHandler {
     func substractDates(lhs: Date, rhs: Date) -> TimeInterval {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
     
     func isToday(_ day: IntervalComponentHandlerInput.WeekDay) -> Bool {
-        let today = Date()
-        if dayNumberOfWeek(date: today) == day.index {
+        let today = dateService.getNowDate()
+        if dayNumberOfWeek(date: today) == day.appleIndex {
             return true
         }
         return false
     }
     
     func isNowTimeBigger(_ time: Date) -> Bool {
+
         let calendar = Calendar.current
         let newDate = Date(timeIntervalSinceReferenceDate: 0)
 
         let timeDateComponents = calendar.dateComponents([.hour, .minute], from: time)
-        let nowDateComponets = calendar.dateComponents([.hour, .minute], from: Date())
+        let nowDateComponets = calendar.dateComponents([.hour, .minute], from: dateService.getNowDate())
         
         if
             let _timeDate = calendar.date(
@@ -158,5 +170,11 @@ private extension IntervalComponentHandler {
             return _nowDate >= _timeDate
         }
         return false
+    }
+    
+    func dayOfWeek(date: Date) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from: date).capitalized
     }
 }

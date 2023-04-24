@@ -15,7 +15,7 @@ class MockNowDateService: DateService {
 
 final class ProjectQ_Components2Tests: XCTestCase {
     func testIsToday() throws {
-        var dateComponents = [
+        let dateComponents = [
             DateComponents(year: 2023, month: 4, day: 24, hour: 12, minute: 0, second: 0), // mon
             DateComponents(year: 2023, month: 4, day: 25, hour: 12, minute: 0, second: 0), // thu
             DateComponents(year: 2023, month: 4, day: 26, hour: 12, minute: 0, second: 0), // wen
@@ -25,12 +25,12 @@ final class ProjectQ_Components2Tests: XCTestCase {
             DateComponents(year: 2023, month: 4, day: 30, hour: 12, minute: 0, second: 0)  // sun
         ]
         
-        var dates = dateComponents.compactMap {
+        let dates = dateComponents.compactMap {
             let calendar = Calendar.current
             return calendar.date(from: $0)
         }
         
-        var allOrderedDays = IntervalComponentHandlerInput.WeekDay.allCases
+        let allOrderedDays = IntervalComponentHandlerInput.WeekDay.allCases
         var rightCases: [Date] = []
         
         for i in 0 ..< 7 {
@@ -87,6 +87,52 @@ final class ProjectQ_Components2Tests: XCTestCase {
         )
         
         // nowTime accept all requirements so it should return true 
+        XCTAssertTrue(handler.shouldAppear())
+    }
+    
+    func testTwoDaysAWeekTimeSmaller() {
+        let calendar = Calendar.current
+        
+        let nowTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 11, minute: 59, second: 0) // mon
+        let testTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 12, minute: 0, second: 0)
+        
+        let nowTime = calendar.date(from: nowTimeComp)!
+        let testTime = calendar.date(from: testTimeComp)!
+        
+        let mock = MockNowDateService(date: nowTime)
+        let input = IntervalComponentHandlerInput(intervalType: .byWeek([.mon]), time: testTime)
+        let handler = IntervalComponentHandler(
+            input: try! JSONEncoder().encode(input),
+            dateService: mock
+        )
+        
+        XCTAssertFalse(handler.shouldAppear())
+    }
+    
+    func testIntervalWithIntervalNowTimeBigger() {
+        let calendar = Calendar.current
+        
+        let nowTimeComp = DateComponents(year: 2023, month: 4, day: 27, hour: 12, minute: 0, second: 1) // 3 days interval
+        let testTimeComp = DateComponents(year: 2023, month: 4, day: 24, hour: 12, minute: 0, second: 0)
+        
+        let nowTime = calendar.date(from: nowTimeComp)!
+        let testTime = calendar.date(from: testTimeComp)!
+        
+        let mock = MockNowDateService(date: testTime)
+        let input = IntervalComponentHandlerInput(intervalType: .interval(3), time: testTime)
+        var handler = IntervalComponentHandler(
+            input: try! JSONEncoder().encode(input),
+            dateService: mock
+        )
+        
+        handler.dateService = MockNowDateService(date: nowTime)
+        
+        XCTAssertTrue(handler.shouldAppear())
+        
+        let nowTimeComp2 = DateComponents(year: 2023, month: 5, day: 1, hour: 12, minute: 0, second: 2)
+        let nowTime2 = calendar.date(from: nowTimeComp2)!
+        handler.dateService = MockNowDateService(date: nowTime2)
+        
         XCTAssertTrue(handler.shouldAppear())
     }
 }

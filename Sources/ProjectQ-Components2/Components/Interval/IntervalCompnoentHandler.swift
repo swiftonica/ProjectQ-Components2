@@ -89,6 +89,7 @@ public class IntervalComponentHandler: AppearComponentHandler {
     ) {
         self.input = input
         self.dateService = dateService
+        self.cache = .init(lastDate: dateService.getNowDate())
     }
 
     public func shouldAppear() -> Bool {
@@ -100,11 +101,11 @@ public class IntervalComponentHandler: AppearComponentHandler {
         case .interval(let interval):
             let calendar = Calendar.current
             let startDate = cache.lastDate
-            let endDate = Date()
+            let endDate = dateService.getNowDate()
             let components = calendar.dateComponents([.day], from: startDate, to: endDate)
             if let days = components.day, isNowTimeBigger(_input.time) {
                 if days >= interval {
-                    self.cache.lastDate = Date() // <- [!] set state
+                    self.cache.lastDate = dateService.getNowDate() // <- [!] set state
                     return true
                 }
             }
@@ -117,11 +118,11 @@ public class IntervalComponentHandler: AppearComponentHandler {
         return false 
     }
     
-    private let dateService: DateServiceProtocol
+    var dateService: DateServiceProtocol
     
     // [!] all this variables mustn't be used outside
     public var input: Data
-    public var cache: IntervalComponentHandlerCache = .init(lastDate: Date())
+    public var cache: IntervalComponentHandlerCache
 }
 
 //MARK: - helpers

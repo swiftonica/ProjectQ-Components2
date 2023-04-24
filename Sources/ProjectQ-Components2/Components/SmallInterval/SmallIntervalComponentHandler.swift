@@ -31,7 +31,6 @@ public class SmallIntervalComponentHandler: AppearComponentHandler {
         
         switch input.intervalType {
         case .seconds:
-            let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
@@ -43,11 +42,10 @@ public class SmallIntervalComponentHandler: AppearComponentHandler {
             }
 
         case .hours:
-            let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
-            if let hours = getInterval(component: .hour, date1: startDate, date2: endDate).second {
+            if let hours = getInterval(component: .hour, date1: startDate, date2: endDate).hour {
                 if hours >= input.interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     return true
@@ -55,11 +53,10 @@ public class SmallIntervalComponentHandler: AppearComponentHandler {
             }
 
         case .minutes:
-            let calendar = Calendar.current
             let startDate = cache.lastDate
             let endDate = Date()
 
-            if let minutes = getInterval(component: .minute, date1: startDate, date2: endDate).second {
+            if let minutes = getInterval(component: .minute, date1: startDate, date2: endDate).minute {
                 if minutes >= input.interval {
                     self.cache.lastDate = Date() // <- [!] set state
                     return true

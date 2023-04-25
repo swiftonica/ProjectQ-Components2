@@ -174,8 +174,8 @@ public extension IntervalComponentHandler {
     
     func isNowTimeEqual(_ time: Date) -> Bool {
         let calendar = Calendar.current
-        let components1 = calendar.dateComponents([.hour, .minute], from: dateService.getNowDate())
-        let components2 = calendar.dateComponents([.hour, .minute], from: time)
+        let components1 = calendar.dateComponents([.hour, .minute, .second], from: dateService.getNowDate())
+        let components2 = calendar.dateComponents([.hour, .minute, .second], from: time)
 
         if components1.hour == components2.hour && components1.minute == components2.minute && components1.second == 0 {
             return true

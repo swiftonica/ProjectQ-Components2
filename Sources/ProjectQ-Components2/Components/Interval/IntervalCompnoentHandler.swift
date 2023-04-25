@@ -176,8 +176,12 @@ public extension IntervalComponentHandler {
         let calendar = Calendar.current
         let components1 = calendar.dateComponents([.hour, .minute, .second], from: dateService.getNowDate())
         let components2 = calendar.dateComponents([.hour, .minute, .second], from: time)
-
-        if components1.hour == components2.hour && components1.minute == components2.minute && components1.second == 0 {
+        
+        print("\(components1.hour == components2.hour), \(components1.minute == components2.minute), \(components1.second == components2.second)")
+        print("intput time: h\(components2.hour), m\(components2.minute), s\(components2.second)")
+        print("now time: h\(components1.hour), m\(components1.minute), s\(components1.second)")
+        
+        if components1.hour == components2.hour && components1.minute == components2.minute && components1.second == components2.second {
             return true
         }
         return false

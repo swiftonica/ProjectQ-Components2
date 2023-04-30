@@ -43,7 +43,7 @@ public class Component {
     
     public static var allComponents: [Component] {
         return [
-            .interval, .description, .smallInterval
+            .interval, .description
         ]
     }
     
